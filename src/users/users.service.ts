@@ -7,18 +7,26 @@ import { Model, isValidObjectId } from 'mongoose';
 
 @Injectable()
 export class UsersService {
+  static findAll() {
+    throw new Error('Method not implemented.');
+  }
 
   constructor(@InjectModel(User.name) private userDocument : Model<UserDocument>){}
 
   async create(createUserDto: CreateUserDto) {
-    const newUser = new this.userDocument(createUserDto)
-    return await newUser.save();
+    try{
+      return await this.userDocument.create(createUserDto);
+    }catch{
+      throw new BadRequestException("check your informations")
+    }
+    
   }
 
   async findAll() {
     let users  : UserDocument[]
     try{
       users = await this.userDocument.find() 
+
     }catch{
       throw new HttpException("server error" , 500)
     }    
@@ -36,7 +44,7 @@ export class UsersService {
     try{
       return await this.userDocument.findById(id) 
      }catch{
-       throw new NotFoundException(`we dont have user of ${id} ID`)
+      throw new NotFoundException(`we dont have user of ${id} ID`)
      }
   }
 
