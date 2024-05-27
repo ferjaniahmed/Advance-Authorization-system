@@ -1,6 +1,6 @@
 export class BookEntity {
     _id ?: string
     name : string
-    photo : string
+    image : string
     authorId : string
 }
