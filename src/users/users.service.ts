@@ -69,4 +69,12 @@ export class UsersService {
        throw new NotFoundException(`we dont have user of ${id} ID`)
      };
   }
+
+  async findByUsername (username :string){
+    try{
+      return await this.userDocument.findOne({username : username}) 
+     }catch{
+       throw new NotFoundException(`we dont have user named ${username}`)
+     };
+  }
 }
