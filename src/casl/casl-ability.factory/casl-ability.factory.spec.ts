@@ -1,8 +1,9 @@
 import { UserEntity } from '../../users/entities/user.entity';
-import { CaslAbilityFactory, isAdmin } from './casl-ability.factory';
+import { CaslAbilityFactory } from './casl-ability.factory';
 import { Actions } from '../actions';
 import { BookEntity } from '../../books/entities/book.entity';
 import { mock } from 'node:test';
+import { ɵvalue } from '@casl/ability';
 
 describe('CaslAbilityFactory', () => {
 
@@ -88,40 +89,29 @@ describe('CaslAbilityFactory', () => {
       
     })
 
-    it("can update book " , ()=>{
-
+    it("can update book", () => {
       const ability = new CaslAbilityFactory().createForUser(user);
 
-      const mockBook : BookEntity = {
-        _id  :"bookId",
-        name: 'book name',
-        image: 'image',
-        authorId: '1'
-      }
-
+      console.log(ability.rules)
       const updateBook = ability.rules.some(
-        (rule) => rule.action === Actions.Update && rule.subject === BookEntity
+        (rule) => rule.action === Actions.Update && rule.subject === BookEntity && rule.conditions
       );
-      
+      const canUpdateBook = ability.can(Actions.Update ,BookEntity) ;
+
       expect(updateBook).toEqual(true);
-      
+      expect(canUpdateBook).toEqual(true);
     })
 
-    it("can delete book " , ()=>{
+    it("can delete book" , ()=>{
 
       const ability = new CaslAbilityFactory().createForUser(user);
-
-      const mockBook : BookEntity = {
-        _id  :"bookId",
-        name: 'book name',
-        image: 'image',
-        authorId: '1'
-      }
 
       const deleteBook = ability.rules.some(
         (rule) => rule.action === Actions.Delete && rule.subject === BookEntity
       );
+      const canDeleteBook = ability.can(Actions.Delete , BookEntity  )
       expect(deleteBook).toEqual(true); 
+      expect(canDeleteBook).toEqual(true)
       
       })
     }
