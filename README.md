@@ -29,7 +29,6 @@
 ## Installation
 
 ```bash
-$ git checkout develop
 $ npm install
 ```
 
